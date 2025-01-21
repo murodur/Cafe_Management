@@ -1,0 +1,14 @@
+{% extends 'orders/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2>Отчет по выручке</h2>
+        <div class="alert alert-info">
+            <h4 class="alert-heading">Общая выручка за смену</h4>
+            <p class="display-4 mb-0">{{ total_revenue }} ₽</p>
+            <small class="text-muted">Учитываются только оплаченные заказы</small>
+        </div>
+    </div>
+</div>
+{% endblock %}

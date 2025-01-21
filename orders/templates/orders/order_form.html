@@ -1,0 +1,61 @@
+{% extends 'orders/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>{% if form.instance.pk %}Изменить заказ #{{ form.instance.pk }}{% else %}Новый заказ{% endif %}</h2>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" id="orderForm">
+            {% csrf_token %}
+            {{ form|crispy }}
+
+            {% if not form.instance.pk %}
+            <div id="itemsContainer">
+                <h4 class="mt-4">Блюда</h4>
+                <div class="item-row row g-3 mb-3">
+                    <div class="col-md-8">
+                        <input type="text" name="items[]" class="form-control" placeholder="Название блюда" required>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="number" name="prices[]" class="form-control" placeholder="Цена" step="0.01" min="0" required>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-outline-secondary mb-4" onclick="addItemRow()">
+                Добавить блюдо
+            </button>
+            {% endif %}
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+                <a href="/" class="btn btn-outline-secondary">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% if not form.instance.pk %}
+<script>
+function addItemRow() {
+    const container = document.getElementById('itemsContainer');
+    const newRow = document.createElement('div');
+    newRow.className = 'item-row row g-3 mb-3';
+    newRow.innerHTML = `
+        <div class="col-md-8">
+            <input type="text" name="items[]" class="form-control" placeholder="Название блюда" required>
+        </div>
+        <div class="col-md-4">
+            <input type="number" name="prices[]" class="form-control" placeholder="Цена" step="0.01" min="0" required>
+        </div>
+    `;
+    container.appendChild(newRow);
+}
+</script>
+{% endif %}
+{% endblock %}
